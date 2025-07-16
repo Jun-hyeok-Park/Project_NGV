@@ -71,7 +71,13 @@ jobs:
           ISSUE_NUMBER="${{ steps.create.outputs.issue }}"
           ISSUE_TITLE="${{ steps.issue-parser.outputs.issueparser_branch}}"
           BRANCH_NAME="${ISSUE_NUMBER}-$(echo ${ISSUE_TITLE} | sed 's/ /-/g')"
+      
           git checkout -b "${BRANCH_NAME}"
+      
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+      
           git push origin "${BRANCH_NAME}"
 
       - name: Update issue title
